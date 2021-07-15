@@ -14,7 +14,7 @@ const configPassport = (passport: PassportStatic) => {
 			{
 				clientID: config.GOOGLE.clientID,
 				clientSecret: config.GOOGLE.clientSecret,
-				callbackURL: '/auth/google/callback',
+				callbackURL: '/api/auth/google/callback',
 			},
 			async (
 				accessToken: string,
