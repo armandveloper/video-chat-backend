@@ -24,9 +24,6 @@ export const validateGoogleIdToken = async (
 		});
 		const payload = ticket.getPayload();
 
-		console.log('============ PAYLOAD ============= ');
-		console.log(payload);
-
 		if (!payload) return null;
 
 		return {
