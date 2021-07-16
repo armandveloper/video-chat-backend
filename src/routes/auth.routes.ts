@@ -1,21 +1,17 @@
-import { Router, Request, Response } from 'express';
-import passport from 'passport';
+import { Router } from 'express';
+import { body } from 'express-validator';
+import checkErrors from '../validations/check-errors';
+import { googleSignin } from '../controllers/auth.controller';
 
 const router = Router();
 
-router.get('/', passport.authenticate('google', { scope: ['profile'] }));
-
-router.get(
-	'/callback',
-	passport.authenticate('google', {
-		failureRedirect: '/',
-		successRedirect: '/dashboard',
-	})
+router.post(
+	'/',
+	[
+		body('idToken', 'the idToken field is required').not().isEmpty(),
+		checkErrors,
+	],
+	googleSignin
 );
-
-router.get('/logout', (req: Request, res: Response) => {
-	req.logout();
-	res.redirect('/');
-});
 
 export default router;

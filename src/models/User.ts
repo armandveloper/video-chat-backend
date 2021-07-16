@@ -1,16 +1,17 @@
 import { Document, model, Schema } from 'mongoose';
 
 export interface IUser extends Document {
-	googleID: string;
+	uid: string;
+	email: string;
 	displayName: string;
 	firstName: string;
 	lastName: string;
-	image?: string;
+	picture: string;
 }
 
-const userSchema = new Schema(
+const userSchema = new Schema<IUser>(
 	{
-		googleID: {
+		email: {
 			type: String,
 			required: true,
 		},
@@ -33,5 +34,11 @@ const userSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+userSchema.methods.toJSON = function () {
+	const { _id, ...user } = this.toObject();
+	user.uid = _id;
+	return user;
+};
 
 export default model('User', userSchema);
