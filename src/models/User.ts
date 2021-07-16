@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser>(
 			type: String,
 			required: true,
 		},
-		image: String,
+		picture: String,
 	},
 	{
 		versionKey: false,

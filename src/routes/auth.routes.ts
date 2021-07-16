@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import checkErrors from '../validations/check-errors';
-import { googleSignin } from '../controllers/auth.controller';
+import isAuthenticated from '../middlewares/isAuthenticated';
+import { googleSignin, renewToken } from '../controllers/auth.controller';
 
 const router = Router();
 
@@ -13,5 +14,7 @@ router.post(
 	],
 	googleSignin
 );
+
+router.get('/', isAuthenticated, renewToken);
 
 export default router;

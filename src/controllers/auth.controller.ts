@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
+import User, { IUser } from '../models/User';
 import { UserProfile, validateGoogleIdToken } from '../helpers/google-verify';
 import { generateToken } from '../helpers/jwt';
 
@@ -34,7 +34,24 @@ export const googleSignin = async (req: Request, res: Response) => {
 	} catch (error) {
 		res.status(400).json({
 			success: false,
-			msg: 'Google Token de Google is not valid',
+			msg: 'Google Token is not valid',
 		});
+	}
+};
+
+export const renewToken = async (req: Request, res: Response) => {
+	try {
+		const userToken = req.user as IUser;
+		const token = await generateToken(userToken);
+		const user = await User.findById(userToken._id);
+		return res.json({
+			success: true,
+			msg: 'Token renewed',
+			user,
+			token,
+		});
+	} catch (err) {
+		console.log('Token renewal error:', err);
+		res.status(500).json({ success: false, msg: 'Error renewing token' });
 	}
 };
