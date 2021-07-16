@@ -1,5 +1,6 @@
 import path from 'path';
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import config from './config';
 import passport from './auth/passport';
 import isAuthenticated from './middlewares/isAuthenticated';
@@ -14,6 +15,12 @@ app.set('PORT', config.PORT);
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(
+	cors({
+		origin: config.CLIENT_URL,
+	})
+);
 
 app.use(passport.initialize());
 
